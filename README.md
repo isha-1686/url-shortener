@@ -1,58 +1,73 @@
 # URL Shortener
 
-A full-stack URL shortener with a REST API backend, React frontend, and PostgreSQL database. Deployed on Render with automated CI/CD via GitHub Actions.
+A full-stack URL shortener with a FastAPI backend, React frontend, and PostgreSQL database. Deployed on Render with Docker and automated CI/CD via GitHub Actions.
 
 ## Live Demo
-- **Frontend:** [your-frontend-url.onrender.com]
-- **API:** [your-backend-url.onrender.com]
+- **Frontend:** https://url-shortener-1-ww94.onrender.com
+- **API:** https://url-shortener-v5xu.onrender.com
+
+> Note: Hosted on Render's free tier — first request may take up to 50 seconds to wake the server.
 
 ## Tech Stack
-- **Backend:** Node.js, Express, PostgreSQL
-- **Frontend:** React
-- **Database:** PostgreSQL (Render)
-- **Deployment:** Render
-- **CI/CD:** GitHub Actions
+| Layer | Technology |
+|-------|-----------|
+| Backend | Python, FastAPI |
+| Frontend | React, Vite |
+| Database | PostgreSQL |
+| Containerization | Docker, Docker Compose |
+| Deployment | Render |
+| CI/CD | GitHub Actions |
 
 ## Features
 - Shorten long URLs to compact links
-- Redirect short URLs to original destinations
-- Track click counts per URL
-- REST API with full CRUD support
+- Redirect short links to original URLs
+- Dockerized for consistent local and production environments
+- Automated CI pipeline validates every push to main
 
 ## Local Setup
 
-**Prerequisites:** Node.js, PostgreSQL, Docker (optional)
+**Prerequisites:** Python 3.11+, Node.js 20+, Docker (optional)
+
+### Without Docker
 
 ```bash
-# Clone the repo
 git clone https://github.com/isha-1686/url-shortener.git
 cd url-shortener
 
 # Backend
 cd backend
-cp .env.example .env      # add your DATABASE_URL
-npm install
-npm start
+pip install -r requirements.txt
+python main.py
 
 # Frontend (new terminal)
 cd frontend
 npm install
-npm start
+npm run dev
 ```
 
-**With Docker:**
+### With Docker
+
 ```bash
 docker-compose up
 ```
 
-## API Endpoints
+## CI/CD Pipeline
 
-| Method | Endpoint | Description |
-|--------|----------|-------------|
-| POST | `/api/shorten` | Create short URL |
-| GET | `/:code` | Redirect to original URL |
-| GET | `/api/urls` | List all URLs |
-| DELETE | `/api/urls/:id` | Delete a URL |
+Every push to `main` triggers a GitHub Actions workflow that:
+1. Installs Python dependencies and validates the backend
+2. Installs Node.js dependencies and builds the React frontend
 
-## CI/CD
-Every push to `main` triggers a GitHub Actions pipeline that builds the project and runs a health check against the live backend.
+## Project Structure
+
+```
+url-shortener/
+├── backend/
+│   ├── main.py
+│   ├── requirements.txt
+│   └── Dockerfile
+├── frontend/
+├── docker-compose.yml
+└── .github/
+    └── workflows/
+        └── deploy.yml
+```
